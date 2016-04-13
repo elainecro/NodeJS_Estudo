@@ -1,6 +1,5 @@
 var express = require('express');
-var routes = require('./routes/index');
-var users = require('./routes/users');
+var load = require('express-load');
 var app = express();
 
 // view engine setup
@@ -9,8 +8,8 @@ app.set('view engine', 'ejs');
 
 app.use(express.static(__dirname, 'public'));
 
-app.use('/', routes);
-app.use('/usuarios', users);
+//load deve acontecer em uma ordem correta de dependencias
+load('models').then('controllers').then('routes').into(app);
 
 app.listen(3000, function(){
   console.log("Ntalk no ar.");
